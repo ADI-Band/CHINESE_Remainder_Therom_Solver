@@ -41,7 +41,9 @@ project/
 4. The app will return the value of x that satisfies all the given congruences.
 
 ⚠️ Notes
+
 -- Make sure that all moduli entered are pairwise coprime for the Chinese Remainder Theorem to be valid.
+
 -- The result is calculated using the Extended Euclidean Algorithm to find modular inverses.
 
 
