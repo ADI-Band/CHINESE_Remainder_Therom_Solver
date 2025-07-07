@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinese Remainder Theorem Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Chinese Remainder Theorem Solver</h1>
+        
+        <form id="crt-form">
+            <label for="num_equations">Enter the number of equations:</label>
+            <input type="number" id="num_equations" name="num_equations" min="1" required>
+
+            <div id="equations"></div>
+
+            <button type="submit">Solve</button>
+        </form>
+
+        <div id="error-message" class="error"></div>
+        <div id="result-message" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Function to generate input fields dynamically
+        document.getElementById('num_equations').addEventListener('change', function() {
+            let num = parseInt(this.value);
+            let equationsDiv = document.getElementById('equations');
+            equationsDiv.innerHTML = ''; // Clear previous inputs
+            
+            for (let i = 0; i < num; i++) {
+                equationsDiv.innerHTML += `
+                    <label for="a${i + 1}">a${i + 1} (remainder for equation ${i + 1}):</label>
+                    <input type="number" id="a${i + 1}" name="a${i + 1}" required>
+                    <label for="m${i + 1}">m${i + 1} (modulus for equation ${i + 1}):</label>
+                    <input type="number" id="m${i + 1}" name="m${i + 1}" required>
+                `;
+            }
+        });
+
+        // Form submission
+        document.getElementById('crt-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+            fetch('/solve', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('error-message').innerText = data.error;
+                    document.getElementById('result-message').style.display = 'none';
+                } else {
+                    document.getElementById('result-message').innerText = data.result;
+                    document.getElementById('result-message').style.display = 'block';
+                    document.getElementById('error-message').innerText = '';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
