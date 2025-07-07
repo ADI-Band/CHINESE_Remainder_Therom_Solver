@@ -12,8 +12,11 @@ This is a Flask-based web application that solves systems of linear congruences 
 📁 Project Structure
 project/
 │
+
 ├── app.py # Flask backend with CRT logic
+
 ├── templates/
+
 │ └── index.html # Frontend form for user interaction
 
 
